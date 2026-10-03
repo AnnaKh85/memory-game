@@ -52,6 +52,17 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
 .records__list { min-height: 48px; padding: 0; margin: 0; list-style: none; }
 .records__empty { color: #64748b; font-size: 0.9375rem; line-height: 1.5; }
 
+.modal { position: fixed; z-index: 10; inset: 0; }
+.modal__backdrop { display: grid; width: 100%; height: 100%; padding: 24px; background: rgb(15 23 42 / 65%); place-items: center; }
+.modal__dialog { width: min(100%, 440px); padding: clamp(28px, 7vw, 44px); text-align: center; background: #fff; border-radius: 20px; box-shadow: 0 24px 60px rgb(15 23 42 / 25%); animation: dialog-appear 240ms ease-out; }
+.modal__eyebrow { margin: 0 0 10px; color: #5b5bd6; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.modal__text { margin-bottom: 28px; color: #64748b; line-height: 1.6; }
+
+@keyframes dialog-appear {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .footer { display: flex; min-height: 82px; align-items: center; justify-content: space-between; color: #64748b; border-top: 1px solid #e2e8f0; }
 .footer__link { color: inherit; font-size: 0.875rem; text-decoration: none; }
 .footer__link:hover, .footer__link:focus-visible { color: #5b5bd6; }

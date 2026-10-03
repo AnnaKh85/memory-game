@@ -56,12 +56,26 @@ app.innerHTML = `
         <span>RS</span><small>School</small>
       </a>
     </footer>
+
+    <div class="modal" data-victory-modal hidden>
+      <div class="modal__backdrop">
+        <section class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="victory-title">
+          <p class="modal__eyebrow">Game complete</p>
+          <h2 id="victory-title">Excellent memory!</h2>
+          <p class="modal__text">You found every pair in <strong data-final-moves>0</strong> moves.</p>
+          <button class="button button--primary" type="button" data-play-again>Play again</button>
+        </section>
+      </div>
+    </div>
   </div>
 `;
 
 const board = app.querySelector('[data-board]');
 const movesOutput = app.querySelector('[data-moves]');
 const newGameButton = app.querySelector('[data-new-game]');
+const victoryModal = app.querySelector('[data-victory-modal]');
+const finalMovesOutput = app.querySelector('[data-final-moves]');
+const playAgainButton = app.querySelector('[data-play-again]');
 
 function shuffle(cards) {
   const shuffledCards = [...cards];
@@ -123,6 +137,12 @@ function resolveTurn(firstCard, secondCard) {
 
   resetTurn();
   renderBoard();
+
+  if (state.matchedCards === state.deck.length) {
+    finalMovesOutput.textContent = state.moves;
+    victoryModal.hidden = false;
+    playAgainButton.focus();
+  }
 }
 
 function handleCardClick(event) {
@@ -169,10 +189,15 @@ function startGame() {
   state.matchedCards = 0;
   state.moves = 0;
   resetTurn();
+  victoryModal.hidden = true;
   updateMoves();
   renderBoard();
 }
 
 board.addEventListener('click', handleCardClick);
 newGameButton.addEventListener('click', startGame);
+playAgainButton.addEventListener('click', () => {
+  startGame();
+  newGameButton.focus();
+});
 startGame();
