@@ -29,6 +29,7 @@ app.innerHTML = `
       </section>
 
       <section class="game__workspace" aria-label="Memory game">
+        <p class="visually-hidden" data-game-status role="status" aria-live="polite"></p>
         <div class="game-panel">
           <div class="game-panel__stat">
             <span class="game-panel__label">Moves</span>
@@ -83,6 +84,7 @@ const victoryModal = app.querySelector('[data-victory-modal]');
 const finalMovesOutput = app.querySelector('[data-final-moves]');
 const playAgainButton = app.querySelector('[data-play-again]');
 const resultsList = app.querySelector('[data-results-list]');
+const gameStatus = app.querySelector('[data-game-status]');
 
 function shuffle(cards) {
   const shuffledCards = [...cards];
@@ -124,6 +126,10 @@ function renderBoard() {
 function updateMoves() {
   movesOutput.value = state.moves;
   movesOutput.textContent = state.moves;
+}
+
+function announce(message) {
+  gameStatus.textContent = message;
 }
 
 function getResults() {
@@ -196,9 +202,11 @@ function resolveTurn(firstCard, secondCard) {
     firstCard.isMatched = true;
     secondCard.isMatched = true;
     state.matchedCards += 2;
+    announce('Matching pair found.');
   } else {
     firstCard.isFlipped = false;
     secondCard.isFlipped = false;
+    announce('The cards do not match. Try again.');
   }
 
   resetTurn();
@@ -208,6 +216,7 @@ function resolveTurn(firstCard, secondCard) {
     saveResult();
     finalMovesOutput.textContent = state.moves;
     victoryModal.hidden = false;
+    announce(`Game complete in ${state.moves} moves.`);
     playAgainButton.focus();
   }
 }
@@ -231,6 +240,7 @@ function handleCardClick(event) {
 
   if (state.firstCardId === null) {
     state.firstCardId = cardId;
+    announce('One card selected. Choose another card.');
     return;
   }
 
@@ -259,6 +269,7 @@ function startGame() {
   victoryModal.hidden = true;
   updateMoves();
   renderBoard();
+  announce('New game started. Find all eight matching pairs.');
 }
 
 board.addEventListener('click', handleCardClick);

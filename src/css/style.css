@@ -13,6 +13,7 @@ body { min-width: 320px; min-height: 100vh; margin: 0; }
 button, input, textarea, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:not(:disabled), a { cursor: pointer; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 .page { display: flex; min-height: 100vh; flex-direction: column; }
 .container { width: min(100% - 32px, 1120px); margin: 0 auto; }
@@ -34,10 +35,13 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
 .game-panel__label { color: #64748b; font-size: 0.875rem; font-weight: 700; }
 .game-panel__value { font-size: 2rem; font-weight: 800; line-height: 1; }
 
-.button { padding: 12px 20px; border: 0; border-radius: 10px; font-weight: 800; }
+.button { padding: 12px 20px; border: 0; border-radius: 10px; font-weight: 800; transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 .button--primary { color: #fff; background: #5b5bd6; box-shadow: 0 8px 18px rgb(91 91 214 / 25%); }
-.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 2vw, 16px); }
-.card { position: relative; aspect-ratio: 1; padding: 0; background: transparent; border: 0; border-radius: clamp(10px, 2vw, 16px); perspective: 800px; }
+.button--primary:hover { background: #4747bd; box-shadow: 0 10px 22px rgb(91 91 214 / 32%); transform: translateY(-2px); }
+.button--primary:active { box-shadow: 0 4px 10px rgb(91 91 214 / 25%); transform: translateY(0); }
+.board { display: grid; grid-template-columns: repeat(4, 160px); justify-content: center; gap: 16px; }
+.card { position: relative; aspect-ratio: 1; padding: 0; background: transparent; border: 0; border-radius: 16px; perspective: 800px; transition: transform 180ms ease; }
+.card:not(:disabled):hover { transform: translateY(-4px); }
 .card:disabled { cursor: default; opacity: 1; }
 .card__inner { position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 8px 18px rgb(30 41 59 / 14%); transform-style: preserve-3d; transition: transform 500ms ease; }
 .card--flipped .card__inner { transform: rotateY(180deg); }
@@ -47,6 +51,11 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
 .card__face--back::before, .card__face--back::after { position: absolute; width: 65%; height: 65%; border: 2px solid rgb(255 255 255 / 25%); border-radius: 50%; content: ''; }
 .card__face--back::after { width: 35%; height: 35%; }
 .card--matched .card__face--front { background: #dcfce7; box-shadow: inset 0 0 0 2px #86efac; }
+.card--matched { animation: matched-card 360ms ease-out; }
+
+@keyframes matched-card {
+  50% { transform: translateY(-6px) scale(1.04); }
+}
 
 .records { display: grid; padding: 24px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 8px 24px rgb(15 23 42 / 5%); gap: 20px; }
 .records__table-wrap { overflow-x: auto; }
@@ -84,4 +93,13 @@ button:focus-visible, a:focus-visible { outline: 3px solid #38bdf8; outline-offs
   .button { padding: 11px 16px; }
   .records { padding: 20px; }
   .footer { min-height: 70px; }
+}
+
+@media (max-width: 719px) {
+  .board { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 2vw, 16px); }
+  .card { border-radius: clamp(10px, 2vw, 16px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
