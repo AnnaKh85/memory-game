@@ -2,6 +2,7 @@ import '../css/style.css';
 
 const app = document.querySelector('#app');
 const cardSymbols = ['☀️', '🌙', '⭐', '🌈', '🍀', '🍓', '🎈', '🎧'];
+const RESULTS_STORAGE_KEY = 'memory-game-results';
 const state = {
   deck: [],
   firstCardId: null,
@@ -44,9 +45,14 @@ app.innerHTML = `
           <p class="records__eyebrow">Best attempts</p>
           <h2 id="records-title">Last 10 games</h2>
         </div>
-        <ol class="records__list">
-          <li class="records__empty">Your completed games will appear here.</li>
-        </ol>
+        <div class="records__table-wrap">
+          <table class="records__table">
+            <thead>
+              <tr><th scope="col">#</th><th scope="col">Moves</th><th scope="col">Date</th></tr>
+            </thead>
+            <tbody data-results-list></tbody>
+          </table>
+        </div>
       </aside>
     </main>
 
@@ -76,6 +82,7 @@ const newGameButton = app.querySelector('[data-new-game]');
 const victoryModal = app.querySelector('[data-victory-modal]');
 const finalMovesOutput = app.querySelector('[data-final-moves]');
 const playAgainButton = app.querySelector('[data-play-again]');
+const resultsList = app.querySelector('[data-results-list]');
 
 function shuffle(cards) {
   const shuffledCards = [...cards];
@@ -119,6 +126,65 @@ function updateMoves() {
   movesOutput.textContent = state.moves;
 }
 
+function getResults() {
+  try {
+    const savedResults = JSON.parse(localStorage.getItem(RESULTS_STORAGE_KEY) ?? '[]');
+
+    if (!Array.isArray(savedResults)) {
+      return [];
+    }
+
+    return savedResults.filter((result) => (
+      Number.isInteger(result.moves)
+      && result.moves > 0
+      && typeof result.completedAt === 'string'
+      && !Number.isNaN(Date.parse(result.completedAt))
+    )).slice(0, 10);
+  } catch {
+    return [];
+  }
+}
+
+function formatCompletionDate(completedAt) {
+  return new Intl.DateTimeFormat('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  }).format(new Date(completedAt));
+}
+
+function renderResults() {
+  const results = getResults();
+
+  if (results.length === 0) {
+    resultsList.innerHTML = '<tr><td class="records__empty" colspan="3">Your completed games will appear here.</td></tr>';
+    return;
+  }
+
+  resultsList.innerHTML = results.map((result, index) => `
+    <tr>
+      <th scope="row">${index + 1}</th>
+      <td>${result.moves}</td>
+      <td>${formatCompletionDate(result.completedAt)}</td>
+    </tr>
+  `).join('');
+}
+
+function saveResult() {
+  const result = {
+    moves: state.moves,
+    completedAt: new Date().toISOString(),
+  };
+
+  try {
+    localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify([result, ...getResults()].slice(0, 10)));
+  } catch {
+    // The game stays playable if browser storage is unavailable.
+  }
+
+  renderResults();
+}
+
 function resetTurn() {
   state.firstCardId = null;
   state.locked = false;
@@ -139,6 +205,7 @@ function resolveTurn(firstCard, secondCard) {
   renderBoard();
 
   if (state.matchedCards === state.deck.length) {
+    saveResult();
     finalMovesOutput.textContent = state.moves;
     victoryModal.hidden = false;
     playAgainButton.focus();
@@ -200,4 +267,5 @@ playAgainButton.addEventListener('click', () => {
   startGame();
   newGameButton.focus();
 });
+renderResults();
 startGame();

@@ -49,8 +49,14 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
 .card--matched .card__face--front { background: #dcfce7; box-shadow: inset 0 0 0 2px #86efac; }
 
 .records { display: grid; padding: 24px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 8px 24px rgb(15 23 42 / 5%); gap: 20px; }
-.records__list { min-height: 48px; padding: 0; margin: 0; list-style: none; }
-.records__empty { color: #64748b; font-size: 0.9375rem; line-height: 1.5; }
+.records__table-wrap { overflow-x: auto; }
+.records__table { width: 100%; border-collapse: collapse; text-align: left; }
+.records__table th, .records__table td { padding: 12px 8px; border-bottom: 1px solid #e2e8f0; }
+.records__table thead { color: #64748b; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.records__table thead th { font-weight: 800; }
+.records__table tbody th { color: #5b5bd6; }
+.records__table tbody tr:last-child th, .records__table tbody tr:last-child td { border-bottom: 0; }
+.records__empty { padding: 16px 8px; color: #64748b; font-size: 0.9375rem; line-height: 1.5; }
 
 .modal { position: fixed; z-index: 10; inset: 0; }
 .modal__backdrop { display: grid; width: 100%; height: 100%; padding: 24px; background: rgb(15 23 42 / 65%); place-items: center; }
