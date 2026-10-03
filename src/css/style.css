@@ -37,13 +37,16 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
 .button { padding: 12px 20px; border: 0; border-radius: 10px; font-weight: 800; }
 .button--primary { color: #fff; background: #5b5bd6; box-shadow: 0 8px 18px rgb(91 91 214 / 25%); }
 .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 2vw, 16px); }
-.card { position: relative; aspect-ratio: 1; padding: 0; color: #fff; background: transparent; border: 0; border-radius: clamp(10px, 2vw, 16px); }
-.card:disabled { opacity: 1; }
-.card__inner, .card__front { position: absolute; inset: 0; border-radius: inherit; }
-.card__inner { display: grid; background: linear-gradient(135deg, #5b5bd6, #7c3aed); box-shadow: 0 8px 18px rgb(30 41 59 / 14%); overflow: hidden; place-items: center; }
-.card__inner::before, .card__inner::after { position: absolute; width: 65%; height: 65%; border: 2px solid rgb(255 255 255 / 25%); border-radius: 50%; content: ''; }
-.card__inner::after { width: 35%; height: 35%; }
-.card__front { display: grid; z-index: 1; font-family: Georgia, serif; font-size: clamp(1.75rem, 7vw, 3.25rem); font-weight: 700; place-items: center; }
+.card { position: relative; aspect-ratio: 1; padding: 0; background: transparent; border: 0; border-radius: clamp(10px, 2vw, 16px); perspective: 800px; }
+.card:disabled { cursor: default; opacity: 1; }
+.card__inner { position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 8px 18px rgb(30 41 59 / 14%); transform-style: preserve-3d; transition: transform 500ms ease; }
+.card--flipped .card__inner { transform: rotateY(180deg); }
+.card__face { position: absolute; inset: 0; display: grid; border-radius: inherit; backface-visibility: hidden; place-items: center; }
+.card__face--front { color: #14213d; background: #fff; font-size: clamp(1.75rem, 7vw, 3.25rem); transform: rotateY(180deg); }
+.card__face--back { color: #fff; background: linear-gradient(135deg, #5b5bd6, #7c3aed); font-family: Georgia, serif; font-size: clamp(1.75rem, 7vw, 3.25rem); font-weight: 700; overflow: hidden; }
+.card__face--back::before, .card__face--back::after { position: absolute; width: 65%; height: 65%; border: 2px solid rgb(255 255 255 / 25%); border-radius: 50%; content: ''; }
+.card__face--back::after { width: 35%; height: 35%; }
+.card--matched .card__face--front { background: #dcfce7; box-shadow: inset 0 0 0 2px #86efac; }
 
 .records { display: grid; padding: 24px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 8px 24px rgb(15 23 42 / 5%); gap: 20px; }
 .records__list { min-height: 48px; padding: 0; margin: 0; list-style: none; }
