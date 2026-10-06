@@ -34,11 +34,15 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
 .game-panel__stat { display: grid; gap: 2px; }
 .game-panel__label { color: #64748b; font-size: 0.875rem; font-weight: 700; }
 .game-panel__value { font-size: 2rem; font-weight: 800; line-height: 1; }
+.game-panel__actions { display: flex; flex-wrap: wrap; justify-content: end; gap: 12px; }
 
 .button { padding: 12px 20px; border: 0; border-radius: 10px; font-weight: 800; transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 .button--primary { color: #fff; background: #5b5bd6; box-shadow: 0 8px 18px rgb(91 91 214 / 25%); }
 .button--primary:hover { background: #4747bd; box-shadow: 0 10px 22px rgb(91 91 214 / 32%); transform: translateY(-2px); }
 .button--primary:active { box-shadow: 0 4px 10px rgb(91 91 214 / 25%); transform: translateY(0); }
+.button--secondary { color: #39399d; background: #e9e9ff; }
+.button--secondary:hover { background: #d9d9ff; transform: translateY(-2px); }
+.button--secondary:active { transform: translateY(0); }
 .board { display: grid; grid-template-columns: repeat(4, 160px); justify-content: center; gap: 16px; }
 .card { position: relative; aspect-ratio: 1; padding: 0; background: transparent; border: 0; border-radius: 16px; perspective: 800px; transition: transform 180ms ease; }
 .card:not(:disabled):hover { transform: translateY(-4px); }
@@ -57,21 +61,21 @@ h2 { margin-bottom: 0; font-size: 1.5rem; }
   50% { transform: translateY(-6px) scale(1.04); }
 }
 
-.records { display: grid; padding: 24px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 8px 24px rgb(15 23 42 / 5%); gap: 20px; }
-.records__table-wrap { overflow-x: auto; }
-.records__table { width: 100%; border-collapse: collapse; text-align: left; }
-.records__table th, .records__table td { padding: 12px 8px; border-bottom: 1px solid #e2e8f0; }
-.records__table thead { color: #64748b; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.records__table thead th { font-weight: 800; }
-.records__table tbody th { color: #5b5bd6; }
-.records__table tbody tr:last-child th, .records__table tbody tr:last-child td { border-bottom: 0; }
-.records__empty { padding: 16px 8px; color: #64748b; font-size: 0.9375rem; line-height: 1.5; }
-
 .modal { position: fixed; z-index: 10; inset: 0; }
 .modal__backdrop { display: grid; width: 100%; height: 100%; padding: 24px; background: rgb(15 23 42 / 65%); place-items: center; }
 .modal__dialog { width: min(100%, 440px); padding: clamp(28px, 7vw, 44px); text-align: center; background: #fff; border-radius: 20px; box-shadow: 0 24px 60px rgb(15 23 42 / 25%); animation: dialog-appear 240ms ease-out; }
+.modal__dialog--wide { width: min(100%, 620px); }
 .modal__eyebrow { margin: 0 0 10px; color: #5b5bd6; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
 .modal__text { margin-bottom: 28px; color: #64748b; line-height: 1.6; }
+.modal__content { margin-top: 20px; }
+.modal__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.leaderboard__table { width: 100%; border-collapse: collapse; text-align: left; }
+.leaderboard__table th, .leaderboard__table td { padding: 12px 8px; border-bottom: 1px solid #e2e8f0; }
+.leaderboard__table thead { color: #64748b; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.leaderboard__table thead th { font-weight: 800; }
+.leaderboard__table tbody th { color: #5b5bd6; }
+.leaderboard__table tbody tr:last-child th, .leaderboard__table tbody tr:last-child td { border-bottom: 0; }
+.leaderboard__empty { padding: 16px 8px; color: #64748b; font-size: 0.9375rem; line-height: 1.5; }
 
 @keyframes dialog-appear {
   from { opacity: 0; transform: translateY(12px) scale(0.97); }
@@ -90,6 +94,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #38bdf8; outline-offs
   .header { padding: 18px 0; }
   .game { padding: 32px 0 40px; gap: 32px; }
   .game-panel { align-items: end; }
+  .game-panel__actions { gap: 8px; }
   .button { padding: 11px 16px; }
   .records { padding: 20px; }
   .footer { min-height: 70px; }

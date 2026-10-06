@@ -10,7 +10,7 @@ Turn over two cards at a time, find all eight matching pairs, and aim to finish 
 - animated card flips and match checking;
 - move counter and a new-game control;
 - result dialog after all pairs have been found;
-- table of the 10 most recent completed games stored in `localStorage`;
+- leaderboard modal with the top 10 results, stored in `localStorage`;
 - responsive layout for screens from 320px wide;
 - keyboard-friendly controls and reduced-motion support.
 
